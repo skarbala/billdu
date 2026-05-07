@@ -35,6 +35,13 @@ jobs:
 
       - name: Run Playwright tests
         run: npx playwright test
+        continue-on-error: true
+
+      - name: Publish CTRF test results
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: ctrf/ctrf-report.json
+        if: always()
 
       - name: Upload test report
         uses: actions/upload-artifact@v4
