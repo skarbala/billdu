@@ -10,6 +10,7 @@ export default defineConfig({
   use: {
     testIdAttribute: 'data-cy',
     trace: 'on-first-retry',
+    baseURL: 'https://my.billdu.com',
   },
 
   projects: [

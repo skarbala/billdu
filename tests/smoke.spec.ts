@@ -11,7 +11,7 @@ test.describe('Smoke', async () => {
     }
 
     test('create new invoice, send to an email', async ({ page }) => {
-        await page.goto('https://my.billdu.com/company.documents.invoices.homepage/default');
+        await page.goto('/company.documents.invoices.homepage/default');
         await test.step('Create new invoice', async () => {
             await page.getByTestId('btn-new').click()
             await page.getByTestId('name-client').click()
@@ -48,7 +48,7 @@ test.describe('Smoke', async () => {
     });
 
     test('create new client', async ({ page }) => {
-        await page.goto('https://my.billdu.com/company.clients.homepage/default');
+        await page.goto('/company.clients.homepage/default');
         await page.getByTestId('btn-new').click()
         await page.getByTestId('name-company').fill('Acme 123')
         await page.getByTestId('btn-save').click()

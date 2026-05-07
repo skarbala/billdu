@@ -1,8 +1,7 @@
-import test from '@playwright/test'
+import { test as setup } from '@playwright/test'
 
-
-test('create new invoice', async ({ page }) => {
-    await page.goto('https://my.billdu.com')
+setup('authenticate', async ({ page }) => {
+    await page.goto('/')
     await page.getByRole('button', { name: 'Accept' }).click()
     await page.getByRole('textbox', { name: 'Your email address' }).fill('skarbala.martin@gmail.com')
     await page.getByRole('button', { name: 'Continue' }).click()
@@ -11,5 +10,4 @@ test('create new invoice', async ({ page }) => {
     await page.getByRole('button', { name: 'Sign in' }).click()
 
     await page.context().storageState({ path: 'auth.json' });
-
 })
