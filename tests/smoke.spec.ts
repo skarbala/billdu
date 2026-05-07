@@ -33,9 +33,9 @@ test.describe('Smoke', async () => {
         })
 
         await test.step('Check invoice can be sent to an email', async () => {
-            await page.waitForTimeout(2000)
+            await page.waitForTimeout(2000) //TODO: not proud about this one, probably need to wait until notification disappears
             await page.getByTestId('btn-send').click({ force: true })
-            await page.locator('[data-testid="input-tags"]').fill('email@gmail.com')
+            await page.locator('[data-testid="input-tags"]').fill('email@gmail.com') //TODO: these 2 selectors are quite ugly, need to fix this
             await page.locator('[id="mailFormSubmit"]').click()
             const response = await page.waitForResponse(
                 response =>
