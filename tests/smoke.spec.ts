@@ -67,7 +67,23 @@ test.describe('Smoke', async () => {
         })
         await test.step('check client available in the list', async () => {
             await expect(page.getByRole('cell', { name: clientName })).toBeVisible()
-
         })
+    })
+
+    test('add expense', async ({ page }) => {
+        const expense = {
+            name: faker.commerce.product(),
+            price: faker.commerce.price()
+        }
+        await page.goto('company.expenses.edit/add');
+        await test.step('add new expense', async () => {
+            await page.getByTestId('name-name').fill(expense.name)
+            await page.getByTestId('name-price').fill(expense.price)
+            await page.getByTestId('name-category').click()
+            await page.getByText('Administratíva').click()
+            await page.locator('#expenseSaveButton').click()
+        })
+        await page.waitForURL('**company.expenses.homepage/default')
+        await expect(page.getByText(expense.name)).toBeVisible()
     })
 })
