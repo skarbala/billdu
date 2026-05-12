@@ -1,7 +1,8 @@
 import test, { expect } from "@playwright/test";
+import { faker } from '@faker-js/faker';
 
 test.use({ storageState: 'auth.json' });
-
+test.setTimeout(6 * 10_000)
 test.describe('Smoke', async () => {
     let invoiceData = {
         service: 'IT services',
@@ -45,15 +46,28 @@ test.describe('Smoke', async () => {
             );
         })
 
+        await test.step('check invoice available in the list', async () => {
+            await page.goto('/company.documents.invoices.homepage/default')
+            await expect(page.getByTestId('column-serialNumber').filter({ hasText: invoiceData.number })).toBeVisible()
+        })
+
     });
 
     test('create new client', async ({ page }) => {
+        const clientName = faker.company.name()
         await page.goto('/company.clients.homepage/default');
-        await page.getByTestId('btn-new').click()
-        await page.getByTestId('name-company').fill('Acme 123')
-        await page.getByTestId('btn-save').click()
-        await page.waitForResponse('**/company.clients.edit/add')
-        await page.waitForURL('**company.clients.homepage/default')
-    })
+        await test.step('create new client', async () => {
+            await page.getByTestId('btn-new').click()
+            await page.getByTestId('name-company').fill(clientName)
+            await page.getByTestId('name-comId').fill(faker.string.numeric(10))
+            await page.getByTestId('btn-save').click()
 
+            await page.waitForResponse('**/company.clients.edit/add')
+            await page.waitForURL('**company.clients.homepage/default')
+        })
+        await test.step('check client available in the list', async () => {
+            await expect(page.getByRole('cell', { name: clientName })).toBeVisible()
+
+        })
+    })
 })
